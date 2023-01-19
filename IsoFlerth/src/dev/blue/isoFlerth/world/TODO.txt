@@ -1,0 +1,25 @@
+A layer is a one-unit-deep set of tiles spanning the entire map. Lower layers cannot be viewed unless you are in them, in which case neither can upper layers. 
+A level is a map or world. 
+The builder will contain the necessary tools to utilize noise data, seed randoms, biome generation, etc to create a bounded world, in which portals to new worlds can be built to create a web of worlds. 
+Process the world in "chunks" of 10x10 tiles to (hopefully) eliminate microbiomes and allow for better structure generation (villages, natural wonders, etc.).
+
+
+
+
+World should now be loaded as a PNG and the Tile[][] should be populated. 
+Tested to be sure tiles were being saved and read properly. 
+
+Tiles need to be scaled based on a set number per monitor width. Monitors are often wider than tall, much wider even; but never taller than wide, except with mobile. Therefore if we 
+assume 1920 -> 19.2 tiles wide, we should have perfect resolution. 
+
+Need to reference the camera via the Level in every tile... or just render the camera, and have the camera render only the tiles in its view. Update needs to happen on every tile though. 
+Added a hotkey for Debug
+
+
+
+
+
+
+Figure out why the camera's location does not reflect the focused tile's location
+
+Draw the game's current FPS in the corner during PlayState if Debug is on
