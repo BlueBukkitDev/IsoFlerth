@@ -17,6 +17,10 @@ public class GameUI {
 	}
 	
 	public void render(Graphics g) {
+		drawCrosshair(g);
+	}
+	
+	private void drawCrosshair(Graphics g) {
 		g.setColor(new Color(160, 160, 0));
 		g.drawLine((int)windowDim.getWidth()/2-2, (int)windowDim.getHeight()/2, (int)windowDim.getWidth()/2+2, (int)windowDim.getHeight()/2);
 		g.drawLine((int)windowDim.getWidth()/2, (int)windowDim.getHeight()/2-2, (int)windowDim.getWidth()/2, (int)windowDim.getHeight()/2+2);
