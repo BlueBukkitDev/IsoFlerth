@@ -25,6 +25,7 @@ public class Camera {
 	private Dimension windowDim;
 	//private double tilesWide, tilesHigh;
 	private Location location;
+	private int tilesToEdge;
 	
 	/**
 	 *Camera takes the Level data and the Viewport data and its own Position data, and uses them to populate the Viewport with tiles from the Level.
@@ -46,18 +47,20 @@ public class Camera {
 	
 	private void populateViewport() {
 		int xMin, xMax, yMin, yMax;
-		int tilesToEdge = (int)Math.ceil(windowDim.width/2/tileWidth*2);//+2, then render up
+		tilesToEdge = (int)Math.ceil(windowDim.width/2/tileWidth*2+1);//+2, then render up
+		System.out.println("TilesToEdge: "+tilesToEdge+", Location: "+location.getX()+"x"+location.getY());
 		xMin = (int) location.getX() - tilesToEdge;
 		yMin = (int) location.getY() - tilesToEdge;
-		Location TLTile = new Location(xMin, yMin);
 		xMax = (int) location.getX() + tilesToEdge;
 		yMax = (int) location.getY() + tilesToEdge;
-		Location BRTile = new Location(xMax, yMax);
 		////All those calculations should be correct////
 		//Now we need a subarray from the multi-dim array of tiles in the Level, and then we populate our viewport with them. 
-	    Tile[][] view = new Tile[xMax-xMin][yMax-yMin];
+	    Tile[][] view = new Tile[yMax-yMin][xMax-xMin];
+	    System.out.println("xMin-xMax: "+xMin+"x"+xMax);
+	    System.out.println("Location of Tile Zero: "+level.getTiles()[xMin][yMin].getCoord().getX()+"x"+level.getTiles()[xMin][yMin].getCoord().getY());
 	    for (int i = 0; i < view[0].length; i++) {
-	        view[i] = Arrays.copyOfRange(level.getTiles()[yMin+i], xMin, xMax);
+	        view[i] = Arrays.copyOfRange(level.getTiles()[xMin+i], yMin, yMax);
+	    	//view[i] = 
 	    }
 	    viewport.setView(view);
 	}
@@ -68,6 +71,18 @@ public class Camera {
 	
 	public double getTileHeight() {
 		return tileHeight;
+	}
+	
+	public int getTilesToEdge() {
+		return tilesToEdge;
+	}
+	
+	private void moveX() {
+		
+	}
+	
+	private void moveY() {
+		
 	}
 	
 	

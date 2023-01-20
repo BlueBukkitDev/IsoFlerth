@@ -48,8 +48,15 @@ public class Tile {
 			type = TileType.WATER;
 		}else if(color.equals(Values.snow)) {
 			type = TileType.SNOW;
-		}else type = TileType.GRASS;
+		}else {
+			type = TileType.GRASS;
+			System.out.println("Gonna have to compromise");
+		}
 		this.coord = new Location(x, y);
+	}
+	
+	public Location getCoord() {
+		return coord;
 	}
 	
 	public void render(Graphics g) {
@@ -65,12 +72,24 @@ public class Tile {
 	}
 	
 	public BufferedImage getTexture() {
-		switch(type) {
-		case GRASS:return grassTex;
-		case DIRT:return dirtTex;
-		case STONE:return stoneTex;
-		case SNOW:return snowTex;
-		default:return grassTex;
+		if(type==TileType.GRASS) {
+			return grassTex;
+		} 
+		if(type==TileType.STONE) {
+			return stoneTex;
 		}
+		if(type==TileType.DIRT) {
+			return dirtTex;
+		}
+		if(type==TileType.WATER) {
+			return waterTex;
+		}
+		if(type==TileType.SNOW) {
+			return snowTex;
+		}
+		if(type==TileType.SAND) {
+			return sandTex;
+		}
+		else return stoneTex;
 	}
 }

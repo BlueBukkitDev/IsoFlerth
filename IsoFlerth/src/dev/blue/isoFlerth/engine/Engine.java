@@ -13,6 +13,7 @@ public class Engine implements Runnable {
 	private Game game;
 	private double FPS = 120;
 	private BufferStrategy bs;
+	private int framerate = 0;
 	
 	/**
 	 *Creates a thread and then sets local variables. This should only ever be instantiated once. 
@@ -51,16 +52,26 @@ public class Engine implements Runnable {
 	@Override
 	public void run() {
 		long lastFrame = System.nanoTime();
-		double passed = 0.0D;
+		long lastTick = System.nanoTime();
+		double passedSinceLastRender = 0.0D;
+		double passedSinceLastTick = 0.0D;
+		int framerateClock = 0;
 		while (this.running) {
 			long now = System.nanoTime();
-			passed = ((now - lastFrame) / 1000000L);
-			if (passed >= 1000.0D/FPS) {
-				passed = 0.0D;
+			passedSinceLastRender = ((now - lastFrame) / 1000000L);
+			passedSinceLastTick = ((now - lastTick) / 1000000L);
+			if (passedSinceLastRender >= 1000.0D/FPS) {
+				passedSinceLastRender = 0.0D;
 				render();
 				//System.out.println("render");
 				update();
 				lastFrame = now;
+				framerateClock++;
+			}
+			if (passedSinceLastTick >= 1000.0D) {
+				framerate = framerateClock;
+				framerateClock = 0;
+				lastTick = now;
 			}
 		}
 	}
@@ -122,5 +133,9 @@ public class Engine implements Runnable {
 	 **/
 	public void update() {
 		game.update();
+	}
+	
+	public int getFramerate() {
+		return framerate;
 	}
 }

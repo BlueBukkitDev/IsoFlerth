@@ -55,4 +55,8 @@ public class Game {
 	public void exit() {
 		engine.stop();
 	}
+	
+	public int getFramerate() {
+		return engine.getFramerate();
+	}
 }

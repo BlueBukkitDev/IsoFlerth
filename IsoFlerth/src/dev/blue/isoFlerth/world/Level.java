@@ -22,10 +22,10 @@ public class Level {
 	}
 	
 	private void fillWorld() {
-		System.out.println("Filling the world with tiles");
 		for(int i = 0; i < tiles.length; i++) {
 			for(int j = 0; j < tiles[i].length; j++) {
-				tiles[i][j] = new Tile(this, new Color(map.getRGB(i, j)), i, j);
+				Tile tile = new Tile(this, new Color(map.getRGB(i, j)), i, j);
+				tiles[i][j] = tile;
 			}
 		}
 	}

@@ -36,18 +36,20 @@ public class Viewport {
 		if(!built) {
 			return;
 		}
-		Location renderLocation = new Location(game.getWindow().getWidth()/2-camera.getTileWidth()/2, 0-450);//(game.getWindow().getHeight()/2-camera.getTileHeight()/2)
+		int yOffset = (int)(camera.getTileHeight()*camera.getTilesToEdge()/2)-(int)(camera.getTileHeight()/3);
+		int xOffset = (int)(camera.getTileWidth()/2);
+		Location renderLocation = new Location(game.getWindow().getWidth()/2-camera.getTileWidth()/2-xOffset, 0-yOffset);//(game.getWindow().getHeight()/2-camera.getTileHeight()/2)
 		for(int i = 0; i < view.length; i++) {
 			for(int j = 0; j < view[0].length; j++) {
 				g.drawImage(view[i][j].getTexture(), (int)renderLocation.getX(), (int)renderLocation.getY(), (int)camera.getTileWidth(), (int)camera.getTileHeight(), null);
 				if(game.debug) {
 					g.setColor(Color.BLACK);
-					g.drawString(i+","+j, (int)(renderLocation.getX()+camera.getTileWidth()/2)-20, (int)(renderLocation.getY()+camera.getTileHeight()/2)+10);
+					g.drawString((int)view[i][j].getCoord().getX()+","+(int)view[i][j].getCoord().getY(), (int)(renderLocation.getX()+camera.getTileWidth()/2)-20, (int)(renderLocation.getY()+camera.getTileHeight()/2)+10);
 				}
-				renderLocation.add(camera.getTileWidth()/2, camera.getTileHeight()/2);
+				renderLocation.add(-(camera.getTileWidth()/2), camera.getTileHeight()/2);
 				if(j+1 == view[0].length) {
-					renderLocation.setX(game.getWindow().getWidth()/2-camera.getTileWidth()/2-((camera.getTileWidth()*i)/2));
-					renderLocation.setY(0-450+((camera.getTileHeight()*i)/2));
+					renderLocation.setX(game.getWindow().getWidth()/2+camera.getTileWidth()/2+((camera.getTileWidth()*i)/2)-xOffset);
+					renderLocation.setY(0-yOffset+((camera.getTileHeight()*i)/2));
 				}
 			}
 		}
