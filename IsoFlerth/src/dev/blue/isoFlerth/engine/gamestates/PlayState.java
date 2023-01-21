@@ -86,6 +86,9 @@ public class PlayState extends GameState {
 		if(e.getKeyCode() == KeyEvent.VK_INSERT) {
 			game.debug = !game.debug;
 		}
+		if(e.getKeyCode() == KeyEvent.VK_F5) {
+			game.getSettings().setMovementStyle(!game.getSettings().getMovementStyle());
+		}
 		camera.onKeyPressed(e);
 	}
 }

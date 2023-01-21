@@ -41,15 +41,27 @@ public class Camera {
 	}
 	
 	public void onKeyPressed(KeyEvent e) {
-		if(e.getKeyCode() == KeyEvent.VK_W) {
-			location.subtract(0, 1);
-		} else if(e.getKeyCode() == KeyEvent.VK_S) {
-			location.add(0, 1);
-		} else if(e.getKeyCode() == KeyEvent.VK_A) {
-			location.subtract(1, 0);
-		} else if(e.getKeyCode() == KeyEvent.VK_D) {
-			location.add(1, 0);
-		} else return;
+		if(!game.getSettings().getMovementStyle()) {
+			if(e.getKeyCode() == KeyEvent.VK_W) {
+				location.subtract(1, 1);
+			} else if(e.getKeyCode() == KeyEvent.VK_S) {
+				location.add(1, 1);
+			} else if(e.getKeyCode() == KeyEvent.VK_A) {
+				location.subtract(1, -1);
+			} else if(e.getKeyCode() == KeyEvent.VK_D) {
+				location.add(1, -1);
+			} else return;
+		} else {
+			if(e.getKeyCode() == KeyEvent.VK_W) {
+				location.subtract(0, 1);
+			} else if(e.getKeyCode() == KeyEvent.VK_S) {
+				location.add(0, 1);
+			} else if(e.getKeyCode() == KeyEvent.VK_A) {
+				location.subtract(1, 0);
+			} else if(e.getKeyCode() == KeyEvent.VK_D) {
+				location.add(1, 0);
+			} else return;
+		}
 		viewport.populate(location);
 	}
 	

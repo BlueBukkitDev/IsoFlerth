@@ -7,15 +7,14 @@ import java.awt.image.BufferedImage;
 import dev.blue.isoFlerth.gfx.ImageLoader;
 import dev.blue.isoFlerth.gfx.Spritesheet;
 import dev.blue.isoFlerth.gfx.Values;
-import dev.blue.isoFlerth.world.Layer;
 import dev.blue.isoFlerth.world.Level;
 import dev.blue.isoFlerth.world.Location;
 
 public class Tile {
 	private Location coord;
 	private TileType type;
-	private Level level;
-	private Layer layer;
+	//private Level level;
+	//private Layer layer;
 	private static BufferedImage grassTex;
 	private static BufferedImage stoneTex;
 	private static BufferedImage dirtTex;
@@ -39,7 +38,7 @@ public class Tile {
 	}
 	
 	public Tile(Level level, Color color, int x, int y) {
-		this.level = level;
+		//this.level = level;
 		if(color.equals(Values.grass)) {
 			type = TileType.GRASS;
 		}else if(color.equals(Values.stone)) {

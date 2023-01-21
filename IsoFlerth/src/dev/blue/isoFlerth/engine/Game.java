@@ -7,6 +7,7 @@ import dev.blue.isoFlerth.engine.gamestates.MenuState;
 import dev.blue.isoFlerth.engine.gamestates.PlayState;
 import dev.blue.isoFlerth.engine.input.KeyManager;
 import dev.blue.isoFlerth.engine.input.MouseManager;
+import dev.blue.isoFlerth.experience.Settings;
 import dev.blue.isoFlerth.gfx.Values;
 
 public class Game {
@@ -17,6 +18,7 @@ public class Game {
 	private KeyManager keyManager;
 	private MouseManager mouseManager;
 	public boolean debug = false;
+	private Settings settings;
 	
 	public Game() {
 		window = new Window();
@@ -28,6 +30,7 @@ public class Game {
 		engine = new Engine(window, this);
 		engine.start();
 		new Values(this);
+		settings = new Settings();
 	}
 	
 	public GameState getState() {
@@ -60,5 +63,9 @@ public class Game {
 	
 	public int getFramerate() {
 		return engine.getFramerate();
+	}
+	
+	public Settings getSettings() {
+		return settings;
 	}
 }

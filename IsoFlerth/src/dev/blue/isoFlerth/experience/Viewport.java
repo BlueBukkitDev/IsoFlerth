@@ -13,15 +13,12 @@ public class Viewport {
 	public static int height;
 	public Location topLeft;
 	private Camera camera;
-	private Game game;
-	private double windowWidth, windowHeight;
+	private double windowWidth;
 	private int tilesToEdge;
 	private Level level;
 	
 	public Viewport(Game game, Camera camera, Level level) {
-		this.game = game;
 		windowWidth = game.getWindow().getWidth(); 
-		windowHeight = game.getWindow().getHeight();
 		this.camera = camera;
 		this.level = level;
 	}
