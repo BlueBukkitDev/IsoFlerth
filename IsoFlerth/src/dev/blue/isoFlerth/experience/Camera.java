@@ -1,31 +1,29 @@
 package dev.blue.isoFlerth.experience;
 
-import java.awt.Dimension;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.util.Arrays;
+import java.awt.event.KeyEvent;
 
 import dev.blue.isoFlerth.engine.Game;
+import dev.blue.isoFlerth.gfx.Values;
 import dev.blue.isoFlerth.world.Level;
 import dev.blue.isoFlerth.world.Location;
 import dev.blue.isoFlerth.world.terrain.Tile;
 
 public class Camera {
-	private Level level;
-	//private Point focus;
-	//private Point destination;
-	//private boolean built = false;
+	private Tile[][] view;
+	private boolean built;
 	protected short zoom = 0;
 	private Viewport viewport;
 	//private int panBorder = 3;
 	//private int xOffset = 0;
 	//private int yOffset = 0;
 	private Game game;
-	private double tileWidth, tileHeight;
-	private Dimension windowDim;
 	//private double tilesWide, tilesHigh;
 	private Location location;
-	private int tilesToEdge;
+	private double windowWidth, windowHeight;
+	
 	
 	/**
 	 *Camera takes the Level data and the Viewport data and its own Position data, and uses them to populate the Viewport with tiles from the Level.
@@ -33,63 +31,66 @@ public class Camera {
 	 **/
 	public Camera(Game game) {
 		this.game = game;
-		this.level = new Level(0);
+		Level level = new Level(0);
 		Tile.loadTex();
-		this.viewport = new Viewport(game, this);
-		this.windowDim = new Dimension(game.getWindow().getWidth(), game.getWindow().getHeight());
-		this.tileWidth = windowDim.width/19.2;//based on width of 1920. Height is not a matter of concern, game will scale with width alone. 
-		this.tileHeight = tileWidth/2;
-		//this.tilesWide = windowDim.width/tileWidth;
-		//this.tilesHigh = windowDim.height/tileHeight;
+		this.viewport = new Viewport(game, this, level);
+		windowWidth = game.getWindow().getWidth(); 
+		windowHeight = game.getWindow().getHeight();
 		this.location = new Location(370, 150);
-		populateViewport();
+		viewport.populate(location);
 	}
 	
-	private void populateViewport() {
-		int xMin, xMax, yMin, yMax;
-		tilesToEdge = (int)Math.ceil(windowDim.width/2/tileWidth*2+1);//+2, then render up
-		System.out.println("TilesToEdge: "+tilesToEdge+", Location: "+location.getX()+"x"+location.getY());
-		xMin = (int) location.getX() - tilesToEdge;
-		yMin = (int) location.getY() - tilesToEdge;
-		xMax = (int) location.getX() + tilesToEdge;
-		yMax = (int) location.getY() + tilesToEdge;
-		////All those calculations should be correct////
-		//Now we need a subarray from the multi-dim array of tiles in the Level, and then we populate our viewport with them. 
-	    Tile[][] view = new Tile[yMax-yMin][xMax-xMin];
-	    System.out.println("xMin-xMax: "+xMin+"x"+xMax);
-	    System.out.println("Location of Tile Zero: "+level.getTiles()[xMin][yMin].getCoord().getX()+"x"+level.getTiles()[xMin][yMin].getCoord().getY());
-	    for (int i = 0; i < view[0].length; i++) {
-	        view[i] = Arrays.copyOfRange(level.getTiles()[xMin+i], yMin, yMax);
-	    	//view[i] = 
-	    }
-	    viewport.setView(view);
+	public void onKeyPressed(KeyEvent e) {
+		if(e.getKeyCode() == KeyEvent.VK_W) {
+			location.subtract(0, 1);
+		} else if(e.getKeyCode() == KeyEvent.VK_S) {
+			location.add(0, 1);
+		} else if(e.getKeyCode() == KeyEvent.VK_A) {
+			location.subtract(1, 0);
+		} else if(e.getKeyCode() == KeyEvent.VK_D) {
+			location.add(1, 0);
+		} else return;
+		viewport.populate(location);
 	}
 	
-	public double getTileWidth() {
-		return tileWidth;
+	public void render(Graphics g) {
+		if(!built) {
+			return;
+		}
+		int yOffset = (int)(Values.tileHeight*viewport.getTilesToEdge()/2)-(int)(Values.tileHeight/3);
+		int xOffset = (int)(Values.tileWidth/2);
+		double renderX = game.getWindow().getWidth()/2-Values.tileWidth/2-xOffset;
+		double renderY = 0-yOffset;
+		for(int i = 0; i < view.length; i++) {
+			for(int j = 0; j < view[0].length; j++) {
+				if(shouldRender(renderX, renderY)) {
+					g.drawImage(view[i][j].getTexture(), (int)renderX, (int)renderY, (int)Values.tileWidth, (int)Values.tileHeight, null);
+					if(game.debug) {
+						g.setColor(Color.BLACK);
+						g.drawString((int)view[i][j].getCoord().getX()+","+(int)view[i][j].getCoord().getY(), (int)(renderX+Values.tileWidth/2)-20, (int)(renderY+Values.tileHeight/2)+10);
+					}
+				}
+				renderX += 0-Values.tileWidth/2;
+				renderY += Values.tileHeight/2;
+				if(j+1 == view[0].length) {
+					renderX = game.getWindow().getWidth()/2+Values.tileWidth/2+((Values.tileWidth*i)/2)-xOffset;
+					renderY = 0-yOffset+((Values.tileHeight*i)/2);
+				}
+			}
+		}
 	}
 	
-	public double getTileHeight() {
-		return tileHeight;
+	private boolean shouldRender(double x, double y) {
+		if(x >= 0-Values.tileWidth && x <= windowWidth && y >= 0-Values.tileHeight && y <= windowHeight) {
+			return true;
+		}
+		return false;
 	}
 	
-	public int getTilesToEdge() {
-		return tilesToEdge;
+	public void setView(Tile[][] tiles) {
+		this.view = tiles;
+		built = true;
 	}
-	
-	private void moveX() {
-		
-	}
-	
-	private void moveY() {
-		
-	}
-	
-	
-	
-	
-	
-	
 	
 	
 	
@@ -135,42 +136,6 @@ public class Camera {
 
 	public Location getTileLocationAt(Point p) {
 		return new Location(0, 0);//This location needs to be calculated carefully. This will not be easy in an isometric view. 
-	}
-
-	public void render(Graphics g) {
-		viewport.render(g);
-		/*if (this.built) {
-			int renderLastX = ViewField.width;
-			int renderLastY = ViewField.height;
-			boolean doingRenderLast = false;
-			for (int y = 0; y < ViewField.height; y++) {
-				for (int x = 0; x < ViewField.width; x++) {
-					g.drawImage(this.viewField.getView()[x][y].getTexture()[0], x * Tile.getWidth() - this.xOffset,
-							y * Tile.getWidth() - this.yOffset, Tile.getWidth() / 2, Tile.getWidth() / 2, null);
-					g.drawImage(this.viewField.getView()[x][y].getTexture()[1], x * Tile.getWidth() - this.xOffset,
-							y * Tile.getWidth() - this.yOffset + Tile.getWidth() / 2, Tile.getWidth() / 2,
-							Tile.getWidth() / 2, null);
-					g.drawImage(this.viewField.getView()[x][y].getTexture()[2],
-							x * Tile.getWidth() - this.xOffset + Tile.getWidth() / 2,
-							y * Tile.getWidth() - this.yOffset + Tile.getWidth() / 2, Tile.getWidth() / 2,
-							Tile.getWidth() / 2, null);
-					g.drawImage(this.viewField.getView()[x][y].getTexture()[3],
-							x * Tile.getWidth() - this.xOffset + Tile.getWidth() / 2,
-							y * Tile.getWidth() - this.yOffset, Tile.getWidth() / 2, Tile.getWidth() / 2, null);
-					if (this.viewField.getView()[x][y].isBeingInspected()) {
-						renderLastX = x;
-						renderLastY = y;
-						doingRenderLast = true;
-					}
-				}
-			}
-			if (doingRenderLast) {
-				g.drawImage(Main.getTextures().tileGlow,
-						renderLastX * Tile.getWidth() - this.xOffset - Tile.getWidth() / 9,
-						renderLastY * Tile.getWidth() - this.yOffset - Tile.getWidth() / 9,
-						Tile.getWidth() + Tile.getWidth() / 9 * 2, Tile.getWidth() + Tile.getWidth() / 9 * 2, null);
-			}
-		}*/
 	}
 
 	//public void update() {

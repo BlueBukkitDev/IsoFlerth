@@ -1,5 +1,6 @@
 package dev.blue.isoFlerth.engine.gamestates;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -41,6 +42,8 @@ public class PlayState extends GameState {
 
 	@Override
 	public void render(Graphics g) {
+		g.setColor(Color.BLACK);
+		g.fillRect(0, 0, windowDim.width, windowDim.height);
 		camera.render(g);
 		gameUI.render(g);
 	}
@@ -83,5 +86,6 @@ public class PlayState extends GameState {
 		if(e.getKeyCode() == KeyEvent.VK_INSERT) {
 			game.debug = !game.debug;
 		}
+		camera.onKeyPressed(e);
 	}
 }

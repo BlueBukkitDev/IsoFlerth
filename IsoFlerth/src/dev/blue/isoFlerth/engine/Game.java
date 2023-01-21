@@ -7,6 +7,7 @@ import dev.blue.isoFlerth.engine.gamestates.MenuState;
 import dev.blue.isoFlerth.engine.gamestates.PlayState;
 import dev.blue.isoFlerth.engine.input.KeyManager;
 import dev.blue.isoFlerth.engine.input.MouseManager;
+import dev.blue.isoFlerth.gfx.Values;
 
 public class Game {
 	
@@ -26,6 +27,7 @@ public class Game {
 		window.setMouseManager(mouseManager);
 		engine = new Engine(window, this);
 		engine.start();
+		new Values(this);
 	}
 	
 	public GameState getState() {
