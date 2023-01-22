@@ -6,10 +6,10 @@ Process the world in "chunks" of 10x10 tiles to (hopefully) eliminate microbiome
 
 
 
-World should now be loaded as a PNG and the Tile[][] should be populated. 
+World is now be loaded as a PNG and the Tile[][] should be populated. 
 Tested to be sure tiles were being saved and read properly. 
 
-Tiles need to be scaled based on a set number per monitor width. Monitors are often wider than tall, much wider even; but never taller than wide, except with mobile. Therefore if we 
+Tiles are now scaled based on a set number per monitor width (width/19.2). Monitors are often wider than tall, much wider even; but never taller than wide, except with mobile. Therefore if we 
 assume 1920 -> 19.2 tiles wide, we should have perfect resolution. 
 
 Need to reference the camera via the Level in every tile... or just render the camera, and have the camera render only the tiles in its view. Update needs to happen on every tile though. 
@@ -18,10 +18,14 @@ Added camera movement
 Added setting for camera movement style
 Figured out why the camera's location does not reflect the focused tile's location
 Drew the game's current FPS in the corner during PlayState if Debug is on
+Fixed the ArrayIndexOutOfBoundsException thrown when you reach the edge of the map. Need to simply have void tiles there. 
 
 
 
 
 
-
-Fix the ArrayIndexOutOfBoundsException thrown when you reach the edge of the map. Need to simply have void tiles there. 
+Fix the strange tile interaction wherein if the tiles on the bottom-left are void, then the tiles on the bottom-right do not render. 
+Add plants, animals, and objects. 
+Add items and an inventory. 
+Add an escape menu. 
+Add a much more 3D way to view tiles, such that water is below grade and objects render in front of each other based on location. 

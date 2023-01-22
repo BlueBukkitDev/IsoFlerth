@@ -2,6 +2,7 @@ package dev.blue.isoFlerth.engine;
 
 import java.awt.Graphics;
 
+import dev.blue.isoFlerth.engine.gamestates.CreditsState;
 import dev.blue.isoFlerth.engine.gamestates.GameState;
 import dev.blue.isoFlerth.engine.gamestates.MenuState;
 import dev.blue.isoFlerth.engine.gamestates.PlayState;
@@ -24,7 +25,7 @@ public class Game {
 		window = new Window();
 		keyManager = new KeyManager(this);
 		mouseManager = new MouseManager(this);
-		state = new dev.blue.isoFlerth.engine.gamestates.CreditsState(this);
+		state = new CreditsState(this);
 		window.setKeyManager(keyManager);
 		window.setMouseManager(mouseManager);
 		engine = new Engine(window, this);

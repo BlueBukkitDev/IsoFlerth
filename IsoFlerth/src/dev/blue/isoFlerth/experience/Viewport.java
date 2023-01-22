@@ -48,7 +48,6 @@ public class Viewport {
 		if(yMax >= 499) {
 			yMax = 498;
 		}
-		System.out.println("Max coords: "+xMax+","+yMax);
 	    Tile[][] view = new Tile[yMax-yMin][xMax-xMin];
 	    for (int i = 0; i < view[0].length; i++) {
 	    	for(int j = 0; j < xMax-xMin; j++) {
