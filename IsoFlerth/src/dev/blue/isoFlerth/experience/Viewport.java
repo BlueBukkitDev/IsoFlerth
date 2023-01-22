@@ -1,7 +1,5 @@
 package dev.blue.isoFlerth.experience;
 
-import java.util.Arrays;
-
 import dev.blue.isoFlerth.engine.Game;
 import dev.blue.isoFlerth.gfx.Values;
 import dev.blue.isoFlerth.world.Level;
@@ -9,8 +7,6 @@ import dev.blue.isoFlerth.world.Location;
 import dev.blue.isoFlerth.world.terrain.Tile;
 
 public class Viewport {
-	public static int width;
-	public static int height;
 	public Location topLeft;
 	private Camera camera;
 	private double windowWidth;
@@ -21,14 +17,27 @@ public class Viewport {
 		windowWidth = game.getWindow().getWidth(); 
 		this.camera = camera;
 		this.level = level;
+		calculateTilesToEdge();
 	}
 	
 	/**
 	 *Populates the View (a Tile[][]) with tiles from the level based on the location of the camera. 
 	 **/
 	public void populate(Location location) {
+		if(location.getX() > 499) {
+			location.setX(499);
+		}
+		if(location.getY() > 499) {
+			location.setY(499);
+		}
+		if(location.getX() < 0) {
+			location.setX(0);
+		}
+		if(location.getY() < 0) {
+			location.setY(0);
+		}
+		camera.setLocation(location);
 		int xMin, xMax, yMin, yMax;
-		calculateTilesToEdge();
 		xMin = (int) location.getX() - tilesToEdge;
 		yMin = (int) location.getY() - tilesToEdge;
 		xMax = (int) location.getX() + tilesToEdge;
@@ -42,10 +51,8 @@ public class Viewport {
 		System.out.println("Max coords: "+xMax+","+yMax);
 	    Tile[][] view = new Tile[yMax-yMin][xMax-xMin];
 	    for (int i = 0; i < view[0].length; i++) {
-	    	try {
-	    		view[i] = Arrays.copyOfRange(level.getTiles()[xMin+i], yMin, yMax);
-	    	} catch(ArrayIndexOutOfBoundsException e) {
-	    		e.printStackTrace();
+	    	for(int j = 0; j < xMax-xMin; j++) {
+	    		view[i][j] = level.getTiles()[xMin+i][yMin+j];
 	    	}
 	    }
 	    camera.setView(view);

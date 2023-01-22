@@ -4,12 +4,14 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 
 import dev.blue.isoFlerth.engine.Game;
 import dev.blue.isoFlerth.gfx.Values;
 import dev.blue.isoFlerth.world.Level;
 import dev.blue.isoFlerth.world.Location;
 import dev.blue.isoFlerth.world.terrain.Tile;
+import dev.blue.isoFlerth.world.terrain.TileType;
 
 public class Camera {
 	private Tile[][] view;
@@ -76,10 +78,9 @@ public class Camera {
 		for(int i = 0; i < view.length; i++) {
 			for(int j = 0; j < view[0].length; j++) {
 				if(shouldRender(renderX, renderY)) {
-					g.drawImage(view[i][j].getTexture(), (int)renderX, (int)renderY, (int)Values.tileWidth, (int)Values.tileHeight, null);
+					drawTile(g, view[i][j], (int)renderX, (int)renderY);
 					if(game.debug) {
-						g.setColor(Color.BLACK);
-						g.drawString((int)view[i][j].getCoord().getX()+","+(int)view[i][j].getCoord().getY(), (int)(renderX+Values.tileWidth/2)-20, (int)(renderY+Values.tileHeight/2)+10);
+						drawDebug(g, view[i][j], renderX, renderY);
 					}
 				}
 				renderX += 0-Values.tileWidth/2;
@@ -89,6 +90,23 @@ public class Camera {
 					renderY = 0-yOffset+((Values.tileHeight*i)/2);
 				}
 			}
+		}
+	}
+	
+	private void drawTile(Graphics g, Tile tile, int x, int y) {
+		if(tile == null) {
+			tile = new Tile(null, TileType.VOID, 0, 0);
+		}
+		g.drawImage(tile.getTexture(), x, y, (int)Values.tileWidth, (int)Values.tileHeight, null);
+	}
+	
+	private void drawDebug(Graphics g, Tile tile, double renderX, double renderY) {
+		g.setColor(Color.BLACK);
+		if(tile == null) {
+			tile = new Tile(null, TileType.VOID, 0, 0);
+		}
+		if(tile.getType() != TileType.VOID) {
+			g.drawString((int)tile.getCoord().getX()+","+(int)tile.getCoord().getY(), (int)(renderX+Values.tileWidth/2)-20, (int)(renderY+Values.tileHeight/2)+10);
 		}
 	}
 	
@@ -102,6 +120,10 @@ public class Camera {
 	public void setView(Tile[][] tiles) {
 		this.view = tiles;
 		built = true;
+	}
+	
+	public void setLocation(Location loc) {
+		this.location = loc;
 	}
 	
 	

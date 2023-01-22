@@ -21,6 +21,7 @@ public class Tile {
 	private static BufferedImage waterTex;
 	private static BufferedImage snowTex;
 	private static BufferedImage sandTex;
+	private static BufferedImage voidTex;
 	
 	public Tile(Level level, TileType type, int x, int y) {
 		this.type = type;
@@ -35,6 +36,7 @@ public class Tile {
 		snowTex = sheet.getSprite(1, 4);
 		waterTex = sheet.getSprite(1, 5);
 		sandTex = sheet.getSprite(1, 1);
+		voidTex = sheet.getSprite(1, 6);
 	}
 	
 	public Tile(Level level, Color color, int x, int y) {
@@ -89,6 +91,9 @@ public class Tile {
 		if(type==TileType.SAND) {
 			return sandTex;
 		}
-		else return stoneTex;
+		if(type==TileType.VOID) {
+			return voidTex;
+		}
+		else return voidTex;
 	}
 }
