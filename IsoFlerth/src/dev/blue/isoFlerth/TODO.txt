@@ -14,12 +14,14 @@ assume 1920 -> 19.2 tiles wide, we should have perfect resolution.
 
 Need to reference the camera via the Level in every tile... or just render the camera, and have the camera render only the tiles in its view. Update needs to happen on every tile though. 
 Added a hotkey for Debug
+Added camera movement
+Added setting for camera movement style
+Figured out why the camera's location does not reflect the focused tile's location
+Drew the game's current FPS in the corner during PlayState if Debug is on
 
 
 
 
 
 
-Figure out why the camera's location does not reflect the focused tile's location
-
-Draw the game's current FPS in the corner during PlayState if Debug is on
+Fix the ArrayIndexOutOfBoundsException thrown when you reach the edge of the map. Need to simply have void tiles there. 

@@ -33,9 +33,20 @@ public class Viewport {
 		yMin = (int) location.getY() - tilesToEdge;
 		xMax = (int) location.getX() + tilesToEdge;
 		yMax = (int) location.getY() + tilesToEdge;
+		if(xMax >= 499) {
+			xMax = 498;
+		}
+		if(yMax >= 499) {
+			yMax = 498;
+		}
+		System.out.println("Max coords: "+xMax+","+yMax);
 	    Tile[][] view = new Tile[yMax-yMin][xMax-xMin];
 	    for (int i = 0; i < view[0].length; i++) {
-	        view[i] = Arrays.copyOfRange(level.getTiles()[xMin+i], yMin, yMax);
+	    	try {
+	    		view[i] = Arrays.copyOfRange(level.getTiles()[xMin+i], yMin, yMax);
+	    	} catch(ArrayIndexOutOfBoundsException e) {
+	    		e.printStackTrace();
+	    	}
 	    }
 	    camera.setView(view);
 	}
