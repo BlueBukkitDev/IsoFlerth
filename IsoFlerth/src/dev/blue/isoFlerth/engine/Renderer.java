@@ -1,8 +1,6 @@
 package dev.blue.isoFlerth.engine;
 
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.image.BufferStrategy;
 
 public class Renderer implements Runnable {
@@ -13,6 +11,7 @@ public class Renderer implements Runnable {
 	private double FPS = 120;
 	private BufferStrategy bs;
 	private int framerate = 0;
+	private Graphics g;
 	
 	public Renderer(Game game) {
 		thread = new Thread(this);
@@ -62,28 +61,28 @@ public class Renderer implements Runnable {
 			render();//This is a recursive precaution, in case the buffer strategy fails (as it does sometimes without explanation). 
 			return;
 		}
-		Graphics g = bs.getDrawGraphics();
-		if (g instanceof Graphics2D) {
-			Graphics2D g2 = (Graphics2D) g;
-			g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		if(g == null) {
+			g = bs.getDrawGraphics();
 		}
+		//Graphics2D g2 = (Graphics2D) g;
+		//g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		//g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		game.render(g);
-		g.dispose();
+		//g.dispose();
 		bs.show();
 	}
 
 	/**
-	 *This method should be called to start the game engine. 
+	 *This method should be called to start the renderer. 
 	 **/
 	public synchronized void start() {
 		thread.start();
 		running = true;
-		initializeGraphics();
+		//initializeGraphics();
 	}
 	
 	/**
-	 *This method should be called to stop the game engine. 
+	 *This method should be called to stop the renderer. 
 	 **/
 	public synchronized void stop() {
 		running = false;
@@ -96,31 +95,8 @@ public class Renderer implements Runnable {
 	}
 	
 	/**
-	 *Forces a proper initialization of the Graphics object. Without this, the lack of a properly rendered first frame 
-	 *can cause errors to be thrown. Days of research couldn't eliminate this method as the best solution, so here it is. 
+	 *Returns an int representing the number of frames that have been rendered in the last 1,000 milliseconds. 
 	 **/
-	private void initializeGraphics() {
-		BufferStrategy bs = game.getWindow().getCanvas().getBufferStrategy();
-		if (bs == null) {
-			try {
-				game.getWindow().getCanvas().createBufferStrategy(2);
-			} catch (Exception e) {
-				e.printStackTrace();
-				return;
-			}
-			initializeGraphics();
-			return;
-		}
-		Graphics g = bs.getDrawGraphics();
-		if (g instanceof Graphics2D) {
-			Graphics2D g2 = (Graphics2D) g;
-			g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		}
-		g.dispose();
-		bs.show();
-	}
-	
 	public int getFramerate() {
 		return framerate;
 	}

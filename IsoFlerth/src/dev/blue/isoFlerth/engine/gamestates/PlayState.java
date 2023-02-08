@@ -1,6 +1,5 @@
 package dev.blue.isoFlerth.engine.gamestates;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -27,6 +26,9 @@ public class PlayState extends GameState {
 	private Camera camera;
 	private GameUI gameUI;
 	
+	/**
+	 *The PlayState is the state of the game where a world is rendered and can be interacted with by a player. 
+	 **/
 	public PlayState(Game game) {
 		super(new ButtonRegistry());
 		this.game = game;
@@ -34,23 +36,19 @@ public class PlayState extends GameState {
 		menuItems = new UIContainer(new Location(windowDim.getWidth()/2, windowDim.getHeight()/2));
 		menuTextures = new Textures().loadMenus();
 		level = new Level(0l);
-		System.out.println("Level Coord Check: 0x0-"+level.getTile(0, 0).getType().toString()+"; 499x0-"+level.getTile(499, 0).getType().toString()
-				+"; 500x500-"+level.getTile(499, 499).getType().toString()+"; 1x500-"+level.getTile(0, 499).getType().toString());
 		camera = new Camera(game);
 		gameUI = new GameUI(game);
 	}
 
 	@Override
 	public void render(Graphics g) {
-		g.setColor(Color.BLACK);
-		g.fillRect(0, 0, windowDim.width, windowDim.height);
 		camera.render(g);
 		gameUI.render(g);
 	}
 
 	@Override
 	public void update() {
-		
+		camera.update();
 	}
 
 	@Override

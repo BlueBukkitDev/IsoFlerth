@@ -14,14 +14,23 @@ import dev.blue.isoFlerth.gfx.Textures;
 
 public class CreditsState extends GameState{
 	
+	/**
+	 *creditFrames is the number of frames that you wish to spend showing the credits screen. 
+	 **/
 	private int creditFrames = 100;//400;
+	
+	/**
+	 *fadeSpeed is a (somewhat poorly implemented) variable that decreases the opacity of the credits by this value per frame. Set to 255 to have no fade. 
+	 **/
+	private int fadeSpeed = 5;
 	/**
 	 *fadeFrames being set above 255 will probably break the fade in the render method.  
 	 **/
-	private int fadeFrames = 15; //200;
+	private int fadeFrames = 255; //200;
 	private List<BufferedImage> credits;
 	private Game game;
 	private Dimension windowDim;
+	private boolean exitCreditsState = false;
 	
 	public CreditsState(Game game) {
 		super(new ButtonRegistry());
@@ -32,24 +41,26 @@ public class CreditsState extends GameState{
 
 	@Override
 	public void render(Graphics g) {
-		g.setColor(new Color(0, 0, 0, 255));
-		g.fillRect(0, 0, windowDim.width, windowDim.height);
-		for(BufferedImage each:credits) {
-			g.drawImage(credits.get(0), 0, 20, windowDim.width, credits.get(0).getHeight()*(windowDim.width/each.getWidth()), null);
-		}
-		if(creditFrames > 0) {
-			creditFrames--;
-		}
-		if(creditFrames <= 0) {
-			g.setColor(new Color(0, 0, 0, 255-fadeFrames));
+		if(fadeFrames-fadeSpeed >= 0) {
+			g.setColor(new Color(0, 0, 0));
 			g.fillRect(0, 0, windowDim.width, windowDim.height);
-			fadeFrames--;
-		}
+			for(BufferedImage each:credits) {
+				g.drawImage(credits.get(0), 0, 20, windowDim.width, credits.get(0).getHeight()*(windowDim.width/each.getWidth()), null);
+			}
+			if(creditFrames > 0) {
+				creditFrames--;
+			}
+			if(creditFrames <= 0) {
+				g.setColor(new Color(0, 0, 0, 255-(fadeFrames -= fadeSpeed)));
+				g.fillRect(0, 0, windowDim.width, windowDim.height);
+				fadeFrames--;
+			}
+		}else exitCreditsState = true;
 	}
 
 	@Override
 	public void update() {
-		if(fadeFrames <= 0) {
+		if(exitCreditsState) {
 			game.changeToMenuState();
 		}
 	}

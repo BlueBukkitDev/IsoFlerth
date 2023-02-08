@@ -13,6 +13,9 @@ public class Viewport {
 	private int tilesToEdge;
 	private Level level;
 	
+	/**
+	 *A Viewport is a class used to determine which tiles will be rendered based on the dimensions of the screen and the desired size of the tiles. 
+	 **/
 	public Viewport(Game game, Camera camera, Level level) {
 		windowWidth = game.getWindow().getWidth(); 
 		this.camera = camera;

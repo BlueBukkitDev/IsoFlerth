@@ -69,8 +69,10 @@ public class Ticker implements Runnable {
 		System.exit(0);
 	}
 	
-	
-	public int getFramerate() {
+	/**
+	 *Returns an int representing the number of frames that have been rendered in the last 1,000 milliseconds. 
+	 **/
+	public int getTickrate() {
 		return tickrate;
 	}
 }

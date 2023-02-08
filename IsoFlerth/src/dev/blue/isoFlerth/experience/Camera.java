@@ -18,8 +18,8 @@ public class Camera {
 	protected short zoom = 0;
 	private Viewport viewport;
 	//private int panBorder = 3;
-	//private int xOffset = 0;
-	//private int yOffset = 0;
+	//private int xOffset, yOffset;
+	//private double renderX, renderY;
 	private Game game;
 	//private double tilesWide, tilesHigh;
 	private Location location;
@@ -90,6 +90,10 @@ public class Camera {
 				}
 			}
 		}
+	}
+	
+	public void update() {
+		
 	}
 	
 	private void drawTile(Graphics g, Tile tile, int x, int y) {
