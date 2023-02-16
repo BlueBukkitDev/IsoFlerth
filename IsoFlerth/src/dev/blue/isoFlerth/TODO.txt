@@ -19,6 +19,7 @@ Added setting for camera movement style
 Figured out why the camera's location does not reflect the focused tile's location
 Drew the game's current FPS in the corner during PlayState if Debug is on
 Fixed the ArrayIndexOutOfBoundsException thrown when you reach the edge of the map. Need to simply have void tiles there. 
+Fixed the bug where the credits would, for a moment, freeze at a mostly transparent state. 
 
 
 

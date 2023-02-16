@@ -17,16 +17,26 @@ public class CreditsState extends GameState{
 	/**
 	 *creditFrames is the number of frames that you wish to spend showing the credits screen. 
 	 **/
-	private int creditFrames = 100;//400;
+	private final int creditFrames = 100;//400;
+	/**
+	 *fadeFrames determines the number of frames during which the credits will fade.  
+	 **/
+	private final int fadeFrames = 25; //200;
+	/**
+	 *fadeClock is a countdown that begins equal to fadeFrames. 
+	 **/
+	private double fadeClock = fadeFrames;
+	/**
+	 *creditClock is a countdown that begins equal to creditFrames. 
+	 **/
+	private int creditClock = creditFrames;
+	/**
+	 *changePerFrame is calculated by dividing the max opacity (255) by the number of frames over which the opacity will decrease. 
+	 **/
+	private double changePerFrame = 255/fadeFrames;
 	
-	/**
-	 *fadeSpeed is a (somewhat poorly implemented) variable that decreases the opacity of the credits by this value per frame. Set to 255 to have no fade. 
-	 **/
-	private int fadeSpeed = 5;
-	/**
-	 *fadeFrames being set above 255 will probably break the fade in the render method.  
-	 **/
-	private int fadeFrames = 255; //200;
+	private int blackoutFrames = 12;
+	
 	private List<BufferedImage> credits;
 	private Game game;
 	private Dimension windowDim;
@@ -41,21 +51,28 @@ public class CreditsState extends GameState{
 
 	@Override
 	public void render(Graphics g) {
-		if(fadeFrames-fadeSpeed >= 0) {
+		if(fadeClock >= 0) {
 			g.setColor(new Color(0, 0, 0));
 			g.fillRect(0, 0, windowDim.width, windowDim.height);
 			for(BufferedImage each:credits) {
 				g.drawImage(credits.get(0), 0, 20, windowDim.width, credits.get(0).getHeight()*(windowDim.width/each.getWidth()), null);
 			}
-			if(creditFrames > 0) {
-				creditFrames--;
-			}
-			if(creditFrames <= 0) {
-				g.setColor(new Color(0, 0, 0, 255-(fadeFrames -= fadeSpeed)));
+			if(creditClock > 0) {
+				creditClock--;
+			}else {
+				g.setColor(new Color(0, 0, 0, 255-(int)(fadeClock*changePerFrame)));
 				g.fillRect(0, 0, windowDim.width, windowDim.height);
-				fadeFrames--;
+				fadeClock--;
 			}
-		}else exitCreditsState = true;
+		}else {
+			if(blackoutFrames > 0) {
+				g.setColor(Color.BLACK);
+				g.fillRect(0, 0, windowDim.width, windowDim.height);
+				blackoutFrames--;
+			}else {
+				exitCreditsState = true;
+			}
+		}
 	}
 
 	@Override

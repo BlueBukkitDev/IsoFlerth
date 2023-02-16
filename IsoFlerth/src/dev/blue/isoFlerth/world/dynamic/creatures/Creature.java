@@ -1,4 +1,6 @@
-package dev.blue.isoFlerth.world.dynamic;
+package dev.blue.isoFlerth.world.dynamic.creatures;
+
+import dev.blue.isoFlerth.world.dynamic.Entity;
 
 public class Creature extends Entity {
 
