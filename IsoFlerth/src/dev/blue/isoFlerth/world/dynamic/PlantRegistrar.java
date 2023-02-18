@@ -4,10 +4,10 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlantTracker {
+public class PlantRegistrar {
 	private List<Plant> plants;
 	
-	public PlantTracker() {
+	public PlantRegistrar() {
 		plants = new ArrayList<Plant>();
 	}
 	

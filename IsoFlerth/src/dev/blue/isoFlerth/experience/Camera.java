@@ -93,7 +93,7 @@ public class Camera {
 	}
 	
 	public void update() {
-		
+		 
 	}
 	
 	private void drawTile(Graphics g, Tile tile, int x, int y) {
