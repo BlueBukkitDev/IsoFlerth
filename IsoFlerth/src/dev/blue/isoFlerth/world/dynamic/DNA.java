@@ -1,6 +1,7 @@
 package dev.blue.isoFlerth.world.dynamic;
 
 public class DNA {
+	
 	private float life;
 	private float health;
 	private float energy;

@@ -53,7 +53,7 @@ public class PlayState extends GameState {
 
 	@Override
 	public void onMouseMove(Point p) {
-		
+		camera.onMouseMoved(p);
 	}
 
 	@Override

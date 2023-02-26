@@ -30,3 +30,5 @@ Add plants, animals, and objects.
 Add items and an inventory. 
 Add an escape menu. 
 Add a much more 3D way to view tiles, such that water is below grade and objects render in front of each other based on location. 
+Add DNA system with all traits and features
+Add gentle panning; panning in fractional tiles. 
