@@ -11,6 +11,7 @@ import java.util.List;
 import dev.blue.isoFlerth.engine.Game;
 import dev.blue.isoFlerth.engine.input.ui.ButtonRegistry;
 import dev.blue.isoFlerth.gfx.Textures;
+import dev.blue.isoFlerth.sfx.SoundPlayer;
 
 public class CreditsState extends GameState{
 	
@@ -41,12 +42,15 @@ public class CreditsState extends GameState{
 	private Game game;
 	private Dimension windowDim;
 	private boolean exitCreditsState = false;
+	private SoundPlayer soundPlayer;
 	
 	public CreditsState(Game game) {
 		super(new ButtonRegistry());
 		this.game = game;
 		windowDim = game.getWindow().getSize();
 		credits = new Textures().loadCredits();
+		soundPlayer = new SoundPlayer();
+		soundPlayer.playSound(soundPlayer.testSong);
 	}
 
 	@Override
