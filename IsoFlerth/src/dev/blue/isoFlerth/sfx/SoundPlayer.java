@@ -1,5 +1,6 @@
 package dev.blue.isoFlerth.sfx;
 
+//import java.applet.AudioClip;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -19,6 +20,10 @@ public class SoundPlayer {
 	}
 	
 	public void playSound(URL soundURL) {
+		//AudioClip sound = new AudioClip("file:///Downloads/notes/A3.aiff");
+	}
+	
+	public void playASound(URL soundURL) {
 		File sound = new File(soundURL.getPath());
 		try {
 			AudioFileFormat format = AudioSystem.getAudioFileFormat(sound);
