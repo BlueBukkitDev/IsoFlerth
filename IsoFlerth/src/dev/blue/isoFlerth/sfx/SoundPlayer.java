@@ -11,6 +11,9 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+
 public class SoundPlayer {
 	
 	public URL testSong;
@@ -20,7 +23,9 @@ public class SoundPlayer {
 	}
 	
 	public void playSound(URL soundURL) {
-		//AudioClip sound = new AudioClip("file:///Downloads/notes/A3.aiff");
+		Media hit = new Media(soundURL.toString());
+		MediaPlayer mediaPlayer = new MediaPlayer(hit);
+		mediaPlayer.play();
 	}
 	
 	public void playASound(URL soundURL) {
@@ -41,5 +46,6 @@ public class SoundPlayer {
 	    } catch(Exception e) {
 	        e.printStackTrace();
 	    }
+	    //MediaPlayer media
 	}
 }
